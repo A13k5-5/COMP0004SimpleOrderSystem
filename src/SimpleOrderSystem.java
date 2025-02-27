@@ -6,6 +6,7 @@ public class SimpleOrderSystem
   public static final int ADD_ORDER = 2;
   public static final int ADD_PRODUCT = 3;
   public static final int LIST_CUSTOMERS = 4;
+  public static final int TOTAL = 5;
   public static final int QUIT = 10;
   private Input in = new Input();
   private ArrayList<Customer> customers;
@@ -24,9 +25,7 @@ public class SimpleOrderSystem
       displayMenu();
       int option = getMenuInput();
       if (option == QUIT)
-      {
         break;
-      }
       doOption(option);
     }
   }
@@ -38,6 +37,7 @@ public class SimpleOrderSystem
     System.out.println(ADD_ORDER + ". Add Order");
     System.out.println(ADD_PRODUCT + ". Add Product");
     System.out.println(LIST_CUSTOMERS + ". List Customers");
+    System.out.println(TOTAL + ". Total");
     System.out.println();
     System.out.println(QUIT + ". Quit");
   }
@@ -57,6 +57,9 @@ public class SimpleOrderSystem
          break;
       case LIST_CUSTOMERS:
         listCustomers();
+        break;
+      case TOTAL:
+        overallTotal();
         break;
       default:
         System.out.println("Invalid option - try again");
@@ -228,9 +231,40 @@ public class SimpleOrderSystem
     }
   }
 
+  public void overallTotal(){
+    int total = 0;
+    for (Customer c : customers){
+      total += c.getTotalForAllOrders();
+    }
+    System.out.println("Total: " + "$" + total);
+  }
+
+  public void addData(){
+    Customer mimi = new Customer("Miminka", "Vic", "Helsinki 3", "123", "miminka@uoh.fi");
+    Customer rory = new Customer("Rory", "Byrne", "Oxford", "452", "rory@ucl.ac.uk");
+    customers.add(mimi);
+    customers.add(rory);
+
+    Product bike = new Product(0, "Bicycle", 5);
+    Product pen = new Product(1, "Pen to write with", 2);
+    products.add(bike);
+    products.add(pen);
+
+    Order m = new Order();
+    m.add(new LineItem(3, bike));
+    m.add(new LineItem(1, pen));
+    mimi.addOrder(m);
+
+    Order r = new Order();
+    r.add(new LineItem(7, bike));
+    r.add(new LineItem(1, pen));
+    rory.addOrder(r);
+  }
+
   public static void main(String[] args)
   {
     SimpleOrderSystem orderSystem = new SimpleOrderSystem();
+    orderSystem.addData();
     orderSystem.run();
   }
 }
