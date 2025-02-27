@@ -183,6 +183,10 @@ public class SimpleOrderSystem
 
   private void addProduct()
   {
+    System.out.println("Enter product name: ");
+    System.out.println("1. Bike");
+    System.out.println("2. Phone");
+    int choice = in.nextInt();
     System.out.print("Enter product code: ");
     int code = in.nextInt();
     in.nextLine();
@@ -190,12 +194,35 @@ public class SimpleOrderSystem
     {
       return;
     }
-    System.out.print("Enter product description: ");
-    String description = in.nextLine();
     System.out.print("Enter product price: ");
     int price = in.nextInt();
     in.nextLine();
-    Product product = new Product(code,description,price);
+
+    Product product;
+
+    switch (choice){
+      case 1: // Bike
+      {
+        System.out.println("Enter number of gears: ");
+        int gears = in.nextInt();
+        System.out.println("Enter wheel size in inches: ");
+        int wheelSize = in.nextInt();
+        product = new Bike(code, price, gears, wheelSize);
+        break;
+      }
+      case 2: // Phone
+      {
+        System.out.println("Enter the phone brand: ");
+        String brand = in.nextLine();
+        System.out.println("Enter storage size in GB: ");
+        int storage = in.nextInt();
+        product = new Phone(code, price, brand, storage);
+        break;
+      }
+      default:
+        return;
+    }
+
     products.add(product);
   }
 
@@ -245,19 +272,19 @@ public class SimpleOrderSystem
     customers.add(mimi);
     customers.add(rory);
 
-    Product bike = new Product(0, "Bicycle", 5);
-    Product pen = new Product(1, "Pen to write with", 2);
+    Product bike = new Bike(0, 100, 5, 18);
+    Product phone = new Phone(1, 650, "Samsung", 128);
     products.add(bike);
-    products.add(pen);
+    products.add(phone);
 
     Order m = new Order();
     m.add(new LineItem(3, bike));
-    m.add(new LineItem(1, pen));
+    m.add(new LineItem(1, phone));
     mimi.addOrder(m);
 
     Order r = new Order();
     r.add(new LineItem(7, bike));
-    r.add(new LineItem(1, pen));
+    r.add(new LineItem(1, phone));
     rory.addOrder(r);
   }
 
